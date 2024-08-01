@@ -6,6 +6,8 @@ RUN mvn -f /home/app/pom.xml clean test package -DskipTests
 
 # Package stage
 FROM azul/zulu-openjdk-alpine:21
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
 COPY --from=build /home/app/target/*.jar hackaton-discovery-service.jar
 EXPOSE 8761
 ENTRYPOINT ["java","-jar","hackaton-discovery-service.jar"]
